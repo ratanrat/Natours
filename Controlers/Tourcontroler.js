@@ -12,8 +12,8 @@ exports.getalltour = (req, res) => {
     status: 'suscess',
     result: datatour.length, // this is exceptionalgeting length of array this is convient top user
     data: {
-      tours: datatour, //here we can write  tours only if datatours is tours  same anme as api end point api/v1/tours
-    },
+      tours: datatour //here we can write  tours only if datatours is tours  same anme as api end point api/v1/tours
+    }
   });
 };
 
@@ -34,13 +34,13 @@ exports.createtour = (req, res) => {
   fs.writeFile(
     `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(datatour),
-    (err) => {
+    err => {
       res.status(201).json({
         status: 'suscess',
 
         data: {
-          tours: newTour,
-        },
+          tours: newTour
+        }
       });
     }
   );
@@ -49,12 +49,12 @@ exports.createtour = (req, res) => {
 //url responses
 exports.gettouronid = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
@@ -62,41 +62,41 @@ exports.gettouronid = (req, res) => {
     status: 'suscess',
 
     data: {
-      tour,
-    },
+      tour
+    }
   });
 };
 //PATCH (UPDATE)
 exports.updatetour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  // const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
   res.status(200).json({
     status: 'suscess',
-    message: '<UPDATE >',
+    message: '<UPDATE >'
   });
 };
 //  DELETEE
 exports.deletetour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  // const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
   res.status(204).json({
     status: 'suscess',
-    data: null,
+    data: null
   });
 };
