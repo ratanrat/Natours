@@ -1,6 +1,9 @@
 const dotenv = require('dotenv');
+
 dotenv.config({ path: './config.env' });
+
 const app = require('./app');
+
 // to know the envoirment of application
 // console.log(app.get('env'));
 // console.log(process.env);
