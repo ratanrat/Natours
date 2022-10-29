@@ -1,8 +1,9 @@
 const express = require('express');
+
 const app = express();
+const morgan = require('morgan');
 const tourroutes = require('./routes/tourroutes');
 const userroutes = require('./routes/userroutes');
-const morgan = require('morgan');
 
 // middleware for post
 app.use(express.json());
