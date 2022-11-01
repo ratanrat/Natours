@@ -18,30 +18,27 @@ app.listen(port, () => {
 
 //db connectivity
 
-// const dbstring = process.env.DATABASE.replace(
-//   '<PASSWORD>',
-//   process.env.DATABASE_PASSWORD
-// );
-
-// HOSTED DB CONNECTION
-// const dbstring = process.env.DATABASE.replace(
-//   '<PASSWORD>',
-//   process.env.DATABASE_PASSWORD
-// );
-
+// LOCAL DB CONNECTING
 // mongose
-//   .connect(dbstring, {
+//   .connect(process.env.DATABASE_LOCAL, {
 //     useNewUrlParser: true,
 //     useCreateIndex: true,
 //     useFindAndModify: false
 //   })
 //   .then(() => console.log('DB connection successful!'));
+// HOSTED DB CONNECTION
+const dbstring = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
-// LOCAL DB CONNECTING
 mongose
-  .connect(process.env.DATABASE_LOCAL, {
+  .connect(dbstring, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
-  .then(() => console.log('DB connection successful!'));
+  .then(() => {
+    console.log('DB connection successful!');
+  });
