@@ -31,7 +31,37 @@ exports.createtour = async (req, res) => {
 
 exports.getalltour = async (req, res) => {
   try {
-    const datatour = await Tour.find();
+    // SIMPLE WITHOUT FILTER
+    // const datatour = await Tour.find(req.query);
+
+    // filtering serach method 1)
+    // const datatour = await Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+
+    // filtering serach method 2)
+    // const datatour = await Tour.find(req.query); //req.query gives parameter that we pass from url (query string)
+
+    // filtering serach method 3 this beacuse some special methiod  page limit sort we want to remove it form url
+
+    // create hard copy of req.query for tha we use structuring
+
+    const objQuery = { ...req.query };
+
+    const exclude = ['page', 'sort', 'limit', 'fields'];
+
+    exclude.forEach(element => {
+      delete objQuery[element];
+    });
+    // console.log(req.query, objQuery);
+
+    const query = Tour.find(objQuery);
+    const datatour = await query;
+
+    // 3)Mdifying query
+
     res.status(200).json({
       status: 'suscess',
       result: datatour.length, // this is exceptionalgeting length of array this is convient top user
