@@ -1,15 +1,16 @@
 const express = require('express');
 
 const app = express();
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const tourroutes = require('./routes/tourroutes');
 const userroutes = require('./routes/userroutes');
 
 // middleware for post
 app.use(express.json());
+
 // third party middleware
 if (process.env.NODE_ENV === 'development') {
-  console.log(app.use(morgan('dev')));
+  // console.log(app.use(morgan('dev')));
 }
 
 // api calling
