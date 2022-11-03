@@ -57,10 +57,19 @@ exports.getalltour = async (req, res) => {
     });
     // console.log(req.query, objQuery);
 
-    const query = Tour.find(objQuery);
-    const datatour = await query;
+    // const query = Tour.find(objQuery);
+    // const datatour = await query;
 
-    // 3)Mdifying query
+    // 3)Modifying query advanced
+
+    let Querystring = JSON.stringify(objQuery);
+    Querystring = Querystring.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      match => `$${match}`
+    ); //thid for operator
+    const query = Tour.find(JSON.parse(Querystring));
+    console.log(JSON.parse(Querystring));
+    const datatour = await query;
 
     res.status(200).json({
       status: 'suscess',
