@@ -1,5 +1,5 @@
 const mongose = require('mongoose');
-
+const slugify = require('slugify');
 // schema for tours
 
 const ToursSchema = new mongose.Schema({
@@ -62,7 +62,15 @@ const ToursSchema = new mongose.Schema({
   price: {
     type: Number,
     required: [true, 'a price name is required ']
-  }
+  },
+  slug: String
+});
+
+// document middle ware
+
+ToursSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 const Tour = mongose.model('Tour', ToursSchema);

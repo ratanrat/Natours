@@ -1,7 +1,7 @@
 const express = require('express');
 const Tourcontrolers = require('./../Controlers/Tourcontroler');
 
-const router = express.Router(); //declaring
+const router = express.Router(); //getting routes api  from app.js
 
 router
   .route('/')

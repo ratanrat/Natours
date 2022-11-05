@@ -19,6 +19,7 @@ app.listen(port, () => {
 //db connectivity
 
 // LOCAL DB CONNECTING
+
 // mongose
 //   .connect(process.env.DATABASE_LOCAL, {
 //     useNewUrlParser: true,
@@ -26,6 +27,7 @@ app.listen(port, () => {
 //     useFindAndModify: false
 //   })
 //   .then(() => console.log('DB connection successful!'));
+
 // HOSTED DB CONNECTION
 const dbstring = process.env.DATABASE.replace(
   '<PASSWORD>',
