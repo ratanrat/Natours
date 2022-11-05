@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 
+// const ndb = require('ndb');
+
 const app = require('./app');
 
 // to know the envoirment of application
@@ -11,7 +13,7 @@ const app = require('./app');
 // console.log(process.env);
 
 // port
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`app listenibg on port ${port}`);
 });
