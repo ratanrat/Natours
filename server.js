@@ -8,12 +8,8 @@ dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
-// to know the envoirment of application
-// console.log(app.get('env'));
-// console.log(process.env);
-
 // port
-const port = process.env.PORT || 3000;
+const port = 3000 || process.env.PORT;
 app.listen(port, () => {
   console.log(`app listenibg on port ${port}`);
 });
@@ -46,3 +42,8 @@ mongose
   .then(() => {
     console.log('DB connection successful!');
   });
+
+// to know the envoirment of application
+console.log(`enviroment is ${app.get('env')}`);
+
+// console.log(process.env);
