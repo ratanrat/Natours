@@ -70,7 +70,6 @@ const ToursSchema = new mongose.Schema({
 });
 
 // document middle ware
-
 ToursSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();

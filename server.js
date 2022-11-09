@@ -4,13 +4,22 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 
-// const ndb = require('ndb');
+// const ndb = require('ndb'); // for browser
+
+process.on('uncaughtException', err => {
+  console.log(
+    ` uncaughtException err_name = ${err.name} and message = ${err.message}`
+  );
+  console.log(err);
+
+  process.exit(1);
+});
 
 const app = require('./app');
 
 // port
 const port = 3000 || process.env.PORT;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`app listenibg on port ${port}`);
 });
 
@@ -47,3 +56,14 @@ mongose
 console.log(`enviroment is ${app.get('env')}`);
 
 // console.log(process.env);
+
+// unhandlle rejection error
+
+process.on('unhandledRejection', err => {
+  console.log(
+    `unhandledRejection errname=${err.name} and message = ${err.message}`
+  );
+  server.close(() => {
+    process.exit(1);
+  });
+});

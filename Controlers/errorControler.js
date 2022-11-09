@@ -16,8 +16,8 @@ const handleCastErrorDB = err => {
 };
 
 const handleDuplicateFieldsDB = err => {
-  console.log(err);
-  const message = `Duplicate field ${err.keyPattern.name} value:' ${err.keyValue.name}.' Please use another value!`;
+  // console.log(err);
+  const message = `Duplicate field value:' ${err.keyValue.name}.' Please use another value!`;
   return new AppError(message, 400);
 };
 
@@ -71,10 +71,10 @@ module.exports = (err, req, res, next) => {
 
     let error = { ...err };
 
-    if (error.kind === 'ObjectId') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.kind === 'ObjectId') error = handleCastErrorDB(error); //this is for undefined id
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error); //this insert duplicate record
     if (error._message === 'Tour validation failed')
-      error = handleValidationErrorDB(error);
+      error = handleValidationErrorDB(error); //validation on input
 
     sendErrorProd(error, res);
   }

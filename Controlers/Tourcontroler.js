@@ -128,6 +128,7 @@ const AppError = require('./../utils/appError');
 //   }
 // };
 // _______________________________MRTHOD RID OF TRY CATCH-----------------------------------------------
+
 exports.getalltour = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
