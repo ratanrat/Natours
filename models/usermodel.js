@@ -1,6 +1,10 @@
 const mongose = require('mongoose');
+
 // const slugify = require('slugify');
+
 const validator = require('validator');
+
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongose.Schema({
   name: {
@@ -34,7 +38,16 @@ const UserSchema = new mongose.Schema({
     }
   }
 });
-UserSchema.pre('save', function(next) {});
+UserSchema.pre('save', async function(next) {
+  // if we update all fields except  password then
+  if (!this.isModified('password')) return next();
+
+  this.password = await bcrypt.hash(this.password, 12); // 12 is cost parameter
+
+  // now we encrypt password so no need of password confirm in db so delete
+  this.passwordconfirm = undefined;
+  next();
+});
 
 const User = mongose.model('User', UserSchema);
 module.exports = User;
