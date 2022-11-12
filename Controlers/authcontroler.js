@@ -78,6 +78,6 @@ exports.protectroutes = catchAsync(async (req, res, next) => {
 
   // 3)check if  user still exist
 
-  // 4) user change password ater jwt issued
+  // 4) user change password ater jwt  was issued
   next();
 });
