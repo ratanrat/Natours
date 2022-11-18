@@ -5,6 +5,7 @@ const AppError = require('./utils/appError');
 const errorControler = require('./Controlers/errorControler');
 
 const app = express();
+
 // const morgan = require('morgan');
 const tourroutes = require('./routes/tourroutes');
 const userroutes = require('./routes/userroutes');
@@ -12,12 +13,17 @@ const userroutes = require('./routes/userroutes');
 // middleware for post
 app.use(express.json());
 
+// middleware for protect routes fgetting hedaers 
+app.use((req,res,next)=>{
+  console.log(req.headers);
+  next();
+}); 
 // third party middleware
-if (process.env.NODE_ENV === 'development') {
-  console.log(`{app.use(morgan('dev'))}`);
-} else if (process.env.NODE_ENV !== 'development') {
-  console.log('frggrgrg');
-}
+// if (process.env.NODE_ENV === 'development') {
+//   console.log(`development`);
+// } else if (process.env.NODE_ENV !== 'development') {
+//   console.log('PRODUCTION');
+// }
 
 // api calling
 app.use('/api/v1/tours', tourroutes); // calling

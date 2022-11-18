@@ -127,7 +127,7 @@ const AppError = require('./../utils/appError');
 //     });
 //   }
 // };
-// _______________________________MRTHOD RID OF TRY CATCH-----------------------------------------------
+// _______________________________METHOD RID OF TRY CATCH-----------------------------------------------
 
 exports.getalltour = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
@@ -194,8 +194,9 @@ exports.updatetour = catchAsync(async (req, res, next) => {
 });
 
 exports.deletetour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
-
+  const { id } = req.params;
+  const tour = await Tour.findByIdAndDelete(id);
+  console.log(id);
   if (!tour) {
     return next(new AppError('No tour found with that ID', 404));
   }

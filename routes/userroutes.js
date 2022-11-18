@@ -4,8 +4,11 @@ const authcontroler = require('./../Controlers/authcontroler');
 
 const router = express.Router(); //declaring it store '/api/v1/users'
 
+router.post('/forgotpassword',authcontroler.forgotpassword);
+router.patch('/resetpassword/:token',authcontroler.resetpassword);
 router.post('/signup', authcontroler.signup);
 router.post('/login', authcontroler.login);
+
 
 router
   .route('/')

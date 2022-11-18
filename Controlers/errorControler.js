@@ -27,7 +27,16 @@ const handleValidationErrorDB = err => {
   const message = `Invalid input data. ${errors.join('. ')}`;
   return new AppError(message, 400);
 };
+const handlejwterror=err=>{
+  const message='Invalid token plz log in again';
+  return new AppError(message, 401);
 
+}
+const handlejwtexpireerror=err=>{
+  const message='Your token is expired plz log in again';
+  return new AppError(message, 401);
+
+}
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -48,7 +57,8 @@ const sendErrorProd = (err, res) => {
     // Programming or other unknown error: don't leak error details
   } else {
     // 1) Log error
-    console.error(err);
+    console.error('ERROR FROM ERROR ENTROLER MSG ');
+    console.log(err);
 
     // 2) Send generic message
     res.status(500).json({
@@ -58,7 +68,8 @@ const sendErrorProd = (err, res) => {
   }
 };
 
-module.exports = (err, req, res, next) => {
+
+module.exports = (err, req, res, next) =>{
   // console.log(err.stack);
 
   err.statusCode = err.statusCode || 500;
@@ -67,7 +78,7 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV !== 'development') {
-    console.log(`in error controler enviroment is${process.env.NODE_ENV}`);
+    // console.log(`in error controler enviroment is${process.env.NODE_ENV}`);
 
     let error = { ...err };
 
@@ -75,7 +86,9 @@ module.exports = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldsDB(error); //this insert duplicate record
     if (error._message === 'Tour validation failed')
       error = handleValidationErrorDB(error); //validation on input
+    if(error.name==='JsonWebTokenError') error=handlejwterror(error);//for invalid jwt 
+    if(error.name==='TokenExpiredError') error=handlejwtexpireerror(error);//for expie jwt tokens 
 
-    sendErrorProd(error, res);
+    sendErrorProd(error, res);//thisn is for no match found errror 
   }
 };

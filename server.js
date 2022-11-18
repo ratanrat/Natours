@@ -8,7 +8,7 @@ dotenv.config({ path: './config.env' });
 
 process.on('uncaughtException', err => {
   console.log(
-    ` uncaughtException err_name = ${err.name} and message = ${err.message}`
+    ` uncaughtException err_name🔥 = ${err.name} and message = ${err.message}`
   );
   console.log(err);
 
