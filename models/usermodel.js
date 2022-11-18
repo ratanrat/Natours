@@ -51,6 +51,8 @@ const UserSchema = new mongose.Schema({
 
 });
 
+// <-----------------encrypt  the password --------------------------->
+
 UserSchema.pre('save', async function(next) {
   // if we update all fields except  password then
   if (!this.isModified('password')) return next();
@@ -62,7 +64,7 @@ UserSchema.pre('save', async function(next) {
   next();
 });
 
-// for password check while login
+// <----------------------for password check while login---------------------->
 
 UserSchema.methods.correctPassword = async function(
   inputpassword,
@@ -71,7 +73,8 @@ UserSchema.methods.correctPassword = async function(
   return await bcrypt.compare(inputpassword, userpassword);
 };
 
-// change password 
+//<----------------------change password ---------------------->
+
 UserSchema.methods.changePasswordAfter= function (JWTTimestamp){
   if(this.changePasswordAt)// if data present in filed 
   {
@@ -86,7 +89,7 @@ UserSchema.methods.changePasswordAfter= function (JWTTimestamp){
 return false; // false if user not change password at the time of login with previous jwt token  
 }
 
-// creating random string/token  for change password
+//<---------------------- creating random string/token  for change password---------------------->
 
   UserSchema.methods.createrandomstring=function(){
     

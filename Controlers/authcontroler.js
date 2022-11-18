@@ -1,4 +1,3 @@
-
 const {promisify} = require('util');
 
 const bcrypt = require('bcryptjs');
@@ -13,7 +12,9 @@ const AppError = require('./../utils/appError');
 
 const sendEmail=require('./../utils/email');
 
- //<----------------token creaation------------------>
+const crypto = require('crypto'); 
+
+//<----------------token creaation------------------>
 const signintoken = id => {
   return jwtoken.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
@@ -115,6 +116,7 @@ req.user=currentuser;// storing current user in user variable
 });
 
 //<--------------------------------- restrict user------------------------------> 
+
 exports.restrictuser=(...roles)=>{ // roles storing arguments in array 
       return (req,res,next)=>{
   console.log(req.user.role);
@@ -131,6 +133,9 @@ exports.restrictuser=(...roles)=>{ // roles storing arguments in array
 }
 
 //<----------------- password reset functionality----------------->
+
+    //<^^^^ first forgotpassword and send email token^^^^^^6> 
+
 exports.forgotpassword=catchAsync(async(req,res,next)=>{
 
   // 1)get the user based on email
@@ -145,10 +150,8 @@ exports.forgotpassword=catchAsync(async(req,res,next)=>{
    await userinfo.save({ validateBeforeSave: false });
 
 // 3)sent it to email 
-const resetURL = `${req.protocol}://${req.get(
-  'host'
-)}/api/v1/users/resetPassword/${randomstring}`;
-
+const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${randomstring}`;
+                  // this is same as http://3000//api/v1/users/resetPassword/token
 const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
 try {
@@ -175,7 +178,16 @@ try {
 
 });
 
+ //<^^^^ second get user on base of enter token and genrate new password ^^^^^^6> 
 
 exports.resetpassword=()=>{
+
+     //1)get user on the base of token 
+
+     //2)check token is expired or not if user is there then set new password 
+
+     //3)upadte change password property 
+
+    //4)log user in,send jwt  
 
 }
