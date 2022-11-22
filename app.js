@@ -1,5 +1,15 @@
 const express = require('express');
 
+const ratelimit = require('express-rate-limit');
+
+const helmet = require('helmet');
+
+const mongosanitize = require('express-mongo-sanitize');
+
+const xssclean = require('xss-clean');
+
+const hpp = require('hpp');
+
 const AppError = require('./utils/appError');
 
 const errorControler = require('./Controlers/errorControler');
@@ -7,25 +17,41 @@ const errorControler = require('./Controlers/errorControler');
 const app = express();
 
 // const morgan = require('morgan');
-const tourroutes = require('./routes/tourroutes');
-const userroutes = require('./routes/userroutes');
+
+// set security http headers
+app.use(helmet());
 
 // middleware for post
 app.use(express.json());
 
-// middleware for protect routes fgetting hedaers 
-app.use((req,res,next)=>{
-  console.log(req.headers);
-  next();
-}); 
+// data sanitization prevent from nosql injection
+app.use(mongosanitize());
+//  xss attack(cross side scripting attack)
+app.use(xssclean());
+
+// para meter polution
+app.use(
+  hpp({
+    whitelist: ['duration', 'price']
+  })
+);
+//custom middleware rate limiting prevent from bruteforce attack
+const limiter = ratelimit({
+  max: 100,
+  wimdowMs: 60 * 60 * 1000,
+  message: 'To many request from this Ip ,please try again i hour!'
+});
+
 // third party middleware
 // if (process.env.NODE_ENV === 'development') {
 //   console.log(`development`);
 // } else if (process.env.NODE_ENV !== 'development') {
 //   console.log('PRODUCTION');
 // }
-
+const tourroutes = require('./routes/tourroutes');
+const userroutes = require('./routes/userroutes');
 // api calling
+app.use('/api', limiter); // this will apply on every api which starts with api
 app.use('/api/v1/tours', tourroutes); // calling
 app.use('/api/v1/users', userroutes); // calling user routes
 
