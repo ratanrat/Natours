@@ -23,7 +23,7 @@ const signintoken = id => {
   });
 };
 
-//<----------------send token coomin functionality ------------------>
+//<----------------send token coomon functionality ------------------>
 const createSendToken = (user, statusCode, res) => {
   const token = signintoken(user._id);
 

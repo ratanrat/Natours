@@ -1,4 +1,3 @@
-
 const nodemailer = require('nodemailer');
 
 const sendEmail = async options => {
@@ -7,9 +6,8 @@ const sendEmail = async options => {
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-        
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
     }
   });
 

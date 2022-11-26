@@ -85,7 +85,7 @@ UserSchema.pre(/^find/, function(next) {
   next();
 });
 
-// } end of middlewares
+// } end of middleware104s
 
 // this all are customize function instance function
 
@@ -103,7 +103,7 @@ UserSchema.methods.correctPassword = async function(
 UserSchema.methods.changePasswordAfter = function(JWTTimestamp) {
   if (this.changePasswordAt) {
     // if data present in filed
-    // get time in secodn so divide it by 1000
+    //to  get time in second so divide it by 1000
 
     const changetiemstmp = parseInt(this.changePasswordAt.getTime() / 1000, 10);
     return JWTTimestamp < changetiemstmp; // return true 0 that is if login time lessthan time of changepasswordat otherwise false so not chnage password

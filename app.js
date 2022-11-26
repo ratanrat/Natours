@@ -50,11 +50,12 @@ const limiter = ratelimit({
 // }
 const tourroutes = require('./routes/tourroutes');
 const userroutes = require('./routes/userroutes');
+const reviewroutes = require('./routes/reviewroutes');
 // api calling
 app.use('/api', limiter); // this will apply on every api which starts with api
-app.use('/api/v1/tours', tourroutes); // calling
+app.use('/api/v1/tours', tourroutes); // calling tour routes
 app.use('/api/v1/users', userroutes); // calling user routes
-
+app.use('/api/v1/review', reviewroutes);
 //wrong api handller
 app.all('*', (req, res, next) => {
   // const err = new Error(`can't found ${req.originalUrl},on this error `);

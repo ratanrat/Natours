@@ -135,7 +135,6 @@ exports.getalltour = catchAsync(async (req, res, next) => {
     .sort()
     .limitFields()
     .paginate();
-
   const tours = await features.query;
 
   // SEND RESPONSE
@@ -149,7 +148,7 @@ exports.getalltour = catchAsync(async (req, res, next) => {
 });
 
 exports.gettouronid = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id);
+  const tour = await Tour.findById(req.params.id).populate('reviews');
   // Tour.findOne({ _id: req.params.id })
 
   if (!tour) {
