@@ -1,8 +1,14 @@
 const express = require('express');
+
 const Tourcontrolers = require('./../Controlers/Tourcontroler');
+
 const authcontroler = require('./../Controlers/authcontroler');
 
 const router = express.Router(); //getting routes api  from app.js
+
+const reviewroute = require('./../routes/reviewroutes'); // for nested routes
+
+router.use('/:toourID/review', reviewroute); //if url is tourid review then use reviewroute
 
 router
   .route('/')
