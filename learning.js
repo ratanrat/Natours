@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+
 const app = express();
 const morgan = require('morgan');
 //middleware for post
@@ -27,8 +28,8 @@ const getalltour = (req, res) => {
     status: 'suscess',
     result: datatour.length, // this is exceptionalgeting length of array this is convient top user
     data: {
-      tours: datatour, //here we can write  tours only if datatours is tours  same anme as api end point api/v1/tours
-    },
+      tours: datatour //here we can write  tours only if datatours is tours  same anme as api end point api/v1/tours
+    }
   });
 };
 
@@ -49,13 +50,14 @@ const createtour = (req, res) => {
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(datatour),
-    (err) => {
+    // eslint-disable-next-line no-unused-vars
+    err => {
       res.status(201).json({
         status: 'suscess',
 
         data: {
-          tours: newTour,
-        },
+          tours: newTour
+        }
       });
     }
   );
@@ -63,12 +65,12 @@ const createtour = (req, res) => {
 //url responses
 const gettouronid = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
@@ -76,42 +78,42 @@ const gettouronid = (req, res) => {
     status: 'suscess',
 
     data: {
-      tour,
-    },
+      tour
+    }
   });
 };
 //PATCH (UPDATE)
 const updatetour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
   res.status(200).json({
     status: 'suscess',
-    message: '<UPDATE >',
+    message: '<UPDATE >'
   });
 };
 //  DELETEE
 const deletetour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = datatour.find((el) => el.id === id);
+  const tour = datatour.find(el => el.id === id);
 
   if (id > datatour.length) {
     res.status(404).json({
       status: 'fail',
-      message: 'invalid id',
+      message: 'invalid id'
     });
   }
 
   res.status(204).json({
     status: 'suscess',
-    data: null,
+    data: null
   });
 };
 
@@ -119,21 +121,21 @@ const deletetour = (req, res) => {
 const getalluser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'this api not define yet ',
+    message: 'this api not define yet '
   });
 };
 
 const createuser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'this api not define yet ',
+    message: 'this api not define yet '
   });
 };
 
 const deleteuser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'this api not define yet ',
+    message: 'this api not define yet '
   });
 };
 // method 1
@@ -164,16 +166,26 @@ const deleteuser = (req, res) => {
 
 const tourRoute = express.Router(); //declaring
 
-tourRoute.route('/').get(getalltour).post(createtour); //for /api/v1/tour
+tourRoute
+  .route('/')
+  .get(getalltour)
+  .post(createtour); //for /api/v1/tour
 
-tourRoute.route('/:id').get(gettouronid).patch(updatetour).delete(deletetour); // for /api/v1/tour/id
+tourRoute
+  .route('/:id')
+  .get(gettouronid)
+  .patch(updatetour)
+  .delete(deletetour); // for /api/v1/tour/id
 
 app.use('/api/v1/tours', tourRoute); // calling
 
 //routing for user
 const userRoute = express.Router();
 
-userRoute.route('/').get(getalluser).post(createuser); //for /api/v1/user
+userRoute
+  .route('/')
+  .get(getalluser)
+  .post(createuser); //for /api/v1/user
 
 userRoute.route('/:id').delete(deleteuser); //for /api/v1/user/:id
 

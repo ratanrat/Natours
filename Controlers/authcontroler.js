@@ -29,7 +29,7 @@ const createSendToken = (user, statusCode, res) => {
 
   // sending token via cookie
   const cookieoptins = {
-    expires_in: new Date(Date.now() + 90) * 24 * 60 * 1000, //24*60*100this is for conver time in milli secod
+    expires_in: new Date(Date.now() + 90) * 24 * 60 * 1000, //24*60*100this is for convert time in milli secod
     // secure: true,
     httpOnly: true
   };
@@ -38,10 +38,10 @@ const createSendToken = (user, statusCode, res) => {
     cookieoptins.secure = true;
   }
   res.cookie('jwt', token, cookieoptins);
-  // remove password from output dont displau
+  // remove password from output dont display
   user.password = undefined;
 
-  res.status(201).json({
+  res.status(statusCode).json({
     status: 'sucess',
     token,
     data: {

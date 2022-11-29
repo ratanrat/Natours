@@ -12,7 +12,19 @@ router
   .post(
     authcontroler.protectroutes,
     authcontroler.restrictuser('user'),
+    reviewcontrolers.settouranduserids, // commit when use method 2||when we use all one handler
     reviewcontrolers.createreview
-  ); //for /api/v1/tour creating tour
-
+  ); // fist it comes from touroutes with id then create review
+router
+  .route('/:id') //for /api/v1/tour creating tour
+  .delete(
+    authcontroler.protectroutes,
+    authcontroler.restrictuser('user'),
+    reviewcontrolers.deletereview
+  )
+  .patch(
+    // authcontroler.protectroutes,
+    // authcontroler.restrictuser('user'),
+    reviewcontrolers.updatereview
+  );
 module.exports = router;

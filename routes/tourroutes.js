@@ -8,17 +8,25 @@ const router = express.Router(); //getting routes api  from app.js
 
 const reviewroute = require('./../routes/reviewroutes'); // for nested routes
 
-router.use('/:toourID/review', reviewroute); //if url is tourid review then use reviewroute
+router.use('/:toourID/review', reviewroute); //craete review on specific tour
 
 router
   .route('/')
-  .get(authcontroler.protectroutes, Tourcontrolers.getalltour) // protect routes exicute for authorize the acces limit of login user
-  .post(Tourcontrolers.createtour); //for /api/v1/tour creating tour
+  .get(Tourcontrolers.getalltour) // protect routes exicute for authorize the acces limit of login user
+  .post(
+    authcontroler.protectroutes,
+    authcontroler.restrictuser('admin', 'lead_guide'),
+    Tourcontrolers.createtour
+  ); //for /api/v1/tour creating tour
 
 router
   .route('/:id')
   .get(Tourcontrolers.gettouronid)
-  .patch(Tourcontrolers.updatetour)
+  .patch(
+    authcontroler.protectroutes,
+    authcontroler.restrictuser('admin', 'lead_guide'),
+    Tourcontrolers.updatetour
+  )
   .delete(
     authcontroler.protectroutes,
     authcontroler.restrictuser('admin', 'lead_guide'),

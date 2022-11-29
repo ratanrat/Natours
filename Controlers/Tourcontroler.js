@@ -1,10 +1,12 @@
 const Tour = require('../models/tourmodel');
 
-const catchAsync = require('./../utils/catchAsync');
+// const catchAsync = require('./../utils/catchAsync');
 
-const APIFeatures = require('../utils/Apifeatures');
-const AppError = require('./../utils/appError');
+// const APIFeatures = require('../utils/Apifeatures');
 
+// const AppError = require('./../utils/appError');
+
+const factoryhandler = require('./allinonehandler'); //this handle all crud opration method 3 for all tout and as well as review
 // RENDERING DTATA (FETCH DATA OR READ )
 
 // exports.getalltour = async (req, res) => {
@@ -129,79 +131,86 @@ const AppError = require('./../utils/appError');
 // };
 // _______________________________METHOD RID OF TRY CATCH-----------------------------------------------
 
-exports.getalltour = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
+// exports.getalltour = catchAsync(async (req, res, next) => {
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
+//   const tours = await features.query;
 
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
+//   // SEND RESPONSE
+//   res.status(200).json({
+//     status: 'success',
+//     results: tours.length,
+//     data: {
+//       tours
+//     }
+//   });
+// });
 
-exports.gettouronid = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // Tour.findOne({ _id: req.params.id })
+// exports.gettouronid = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findById(req.params.id).populate('reviews');
+//   // Tour.findOne({ _id: req.params.id })
 
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
+//   if (!tour) {
+//     return next(new AppError('No tour found with that ID', 404));
+//   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
-});
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tour
+//     }
+//   });
+// });
 
-exports.createtour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
+// exports.createtour = catchAsync(async (req, res, next) => {
+//   const newTour = await Tour.create(req.body);
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour
-    }
-  });
-});
+//   res.status(201).json({
+//     status: 'success',
+//     data: {
+//       tour: newTour
+//     }
+//   });
+// });
 
-exports.updatetour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+// exports.updatetour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true
+//   });
 
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
+//   if (!tour) {
+//     return next(new AppError('No tour found with that ID', 404));
+//   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
-});
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tour
+//     }
+//   });
+// });
 
-exports.deletetour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const tour = await Tour.findByIdAndDelete(id);
-  console.log(id);
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
+// exports.deletetour = catchAsync(async (req, res, next) => {
+//   const { id } = req.params;
+//   const tour = await Tour.findByIdAndDelete(id);
+//   console.log(id);
+//   if (!tour) {
+//     return next(new AppError('No tour found with that ID', 404));
+//   }
 
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-});
+//   res.status(204).json({
+//     status: 'success',
+//     data: null
+//   });
+// });
+
+// _______________________________METHOD using allinone handler---------------------------------------------
+exports.createtour = factoryhandler.createone(Tour);
+exports.getalltour = factoryhandler.getall(Tour);
+exports.gettouronid = factoryhandler.getone(Tour, { path: 'reviews' });
+exports.deletetour = factoryhandler.deleteone(Tour);
+exports.updatetour = factoryhandler.updateone(Tour);
