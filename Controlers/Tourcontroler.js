@@ -211,6 +211,9 @@ const factoryhandler = require('./allinonehandler'); //this handle all crud opra
 // _______________________________METHOD using allinone handler---------------------------------------------
 exports.createtour = factoryhandler.createone(Tour);
 exports.getalltour = factoryhandler.getall(Tour);
-exports.gettouronid = factoryhandler.getone(Tour, { path: 'reviews' });
+exports.gettouronid = factoryhandler.getone(Tour, {
+  path: 'reviews',
+  select: 'review user'
+});
 exports.deletetour = factoryhandler.deleteone(Tour);
 exports.updatetour = factoryhandler.updateone(Tour);

@@ -103,6 +103,9 @@ const ToursSchema = new mongose.Schema(
   }
 );
 
+// for reading improve
+ToursSchema.index({ price: 1 });
+
 // document middle ware
 ToursSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });

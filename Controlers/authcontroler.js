@@ -76,6 +76,7 @@ exports.signup = catchAsync(async (req, res) => {
 });
 
 //<---------------- login details checker--------------->
+
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 

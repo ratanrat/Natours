@@ -44,5 +44,6 @@ exports.settouranduserids = (req, res, next) => {
 };
 exports.createreview = factoryhandler.createone(reviews);
 exports.getallreview = factoryhandler.getall(reviews);
+exports.getReview = factoryhandler.getone(reviews);
 exports.deletereview = factoryhandler.deleteone(reviews);
 exports.updatereview = factoryhandler.updateone(reviews);
