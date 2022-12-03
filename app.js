@@ -1,5 +1,7 @@
 const express = require('express');
 
+const path = require('path');
+
 const ratelimit = require('express-rate-limit');
 
 const helmet = require('helmet');
@@ -13,6 +15,8 @@ const hpp = require('hpp');
 const AppError = require('./utils/appError');
 
 const errorControler = require('./Controlers/errorControler');
+
+const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
@@ -51,7 +55,15 @@ const limiter = ratelimit({
 const tourroutes = require('./routes/tourroutes');
 const userroutes = require('./routes/userroutes');
 const reviewroutes = require('./routes/reviewroutes');
+
+// setting pug template to rener
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+// this for accesss public folder evry where
+app.use(express.static(path.join(__dirname, 'public')));
+
 // api calling
+app.use('/', viewRouter);
 app.use('/api', limiter); // this will apply on every api which starts with api
 app.use('/api/v1/tours', tourroutes); // calling tour routes
 app.use('/api/v1/users', userroutes); // calling user routes

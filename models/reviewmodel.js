@@ -32,9 +32,9 @@ const reviewschema = new mongose.Schema(
     toObject: { virtuals: true }
   }
 );
-reviewschema.index({ tour: 1, user: 1 });
+// reviewschema.index({ tour: 1, user: 1 });
 
-// reviewschema.index({ tour: 1, user: 1 }, { unique: true });
+reviewschema.index({ tour: 1, user: 1 }, { unique: true });
 
 // multipule populate
 // reviewschema.pre(/^find/, function(next) {
@@ -45,6 +45,11 @@ reviewschema.index({ tour: 1, user: 1 });
 //   next();
 // });
 
+// we did single for tour when we fetch we want only review populate only user
+reviewschema.pre(/^find/, function(next) {
+  this.populate({ path: 'user', select: 'name photo' });
+  next();
+});
 // calculating averarge of rating and store it in tour model using statics method
 
 reviewschema.statics.calculateaveragerating = async function(tourId) {
@@ -60,7 +65,7 @@ reviewschema.statics.calculateaveragerating = async function(tourId) {
       }
     }
   ]);
-  console.log(stats);
+  // console.log(stats);
   if (stats.length > 0) {
     await Tour.findByIdAndUpdate(tourId, {
       ratingsQuantity: stats[0].nRating,
@@ -96,12 +101,6 @@ reviewschema.post(/^findOneAnd/, async function() {
   // await this.findOne(); does NOT work here, query has already executed therfore we use this.r to get info about tour
   // constructor for apply on current
   await this.r.constructor.calculateaveragerating(this.r.tour);
-});
-
-// we did single for tour when we fetch we want only review populate only user
-reviewschema.pre(/^find/, function(next) {
-  this.populate({ path: 'user', select: 'name photo' });
-  next();
 });
 
 const reviewdb = mongose.model('review', reviewschema);

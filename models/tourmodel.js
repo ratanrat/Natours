@@ -45,8 +45,8 @@ const ToursSchema = new mongose.Schema(
     description: {
       type: String,
       trim: true,
-      required: [true, 'A tour must have a description'],
-      select: false
+      required: [true, 'A tour must have a description']
+      // select: false
     },
     imageCover: {
       type: String,
@@ -67,23 +67,27 @@ const ToursSchema = new mongose.Schema(
       type: Number,
       required: [true, 'a price name is required ']
     },
-    startliocation: {
+
+    startLocation: {
+      // GeoJSON
       type: {
         type: String,
-        default: 'point', //we can give polygin or other geometric types but for start locationpoint
-        enum: ['point']
+        default: 'Point',
+        enum: ['Point']
       },
-      cordinates: [Number],
+      coordinates: [Number],
       address: String,
       description: String
     },
 
-    location: [
+    locations: [
       {
         type: {
-          type: String
+          type: String,
+          default: 'Point',
+          enum: ['Point']
         },
-        cordinates: [Number],
+        coordinates: [Number],
         address: String,
         description: String,
         day: Number
@@ -104,7 +108,10 @@ const ToursSchema = new mongose.Schema(
 );
 
 // for reading improve
-ToursSchema.index({ price: 1 });
+// ToursSchema.index({ price: 1 });
+ToursSchema.index({ price: 1, ratingsAverage: -1 });
+ToursSchema.index({ slug: 1 });
+ToursSchema.index({ startLocation: '2dsphere' });
 
 // document middle ware
 ToursSchema.pre('save', function(next) {

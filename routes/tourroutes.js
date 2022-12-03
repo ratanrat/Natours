@@ -9,7 +9,13 @@ const router = express.Router(); //getting routes api  from app.js
 const reviewroute = require('./../routes/reviewroutes'); // for nested routes
 
 router.use('/:toourID/review', reviewroute); //craete review on specific tour
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(Tourcontrolers.getToursWithin);
+// /tours-within?distance=233&center=-40,45&unit=mi
+// /tours-within/233/center/-40,45/unit/mi
 
+router.route('/distances/:latlng/unit/:unit').get(Tourcontrolers.getDistances);
 router
   .route('/')
   .get(Tourcontrolers.getalltour) // protect routes exicute for authorize the acces limit of login user
